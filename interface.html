@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Envie sua mensagem, música e foto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f9f9f9;
+        }
+        form {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        input[type="file"] {
+            margin-top: 0.5rem;
+        }
+        .preview {
+            margin-top: 1rem;
+        }
+        .preview img {
+            max-width: 100%;
+            max-height: 200px;
+            display: block;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+        }
+        .preview audio {
+            margin-top: 0.5rem;
+            width: 100%;
+            outline: none;
+        }
+        button {
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Envie sua mensagem, música e foto</h1>
+    <form id="uploadForm">
+        <label for="message">Mensagem:</label>
+        <textarea id="message" name="message" placeholder="Escreva sua mensagem aqui..."></textarea>
+
+        <label for="music">Anexar música (mp3, wav):</label>
+        <input type="file" id="music" name="music" accept="audio/*" />
+
+        <label for="photo">Adicionar foto (jpg, png):</label>
+        <input type="file" id="photo" name="photo" accept="image/*" />
+
+        <div class="preview" id="preview"></div>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        const musicInput = document.getElementById('music');
+        const photoInput = document.getElementById('photo');
+        const previewDiv = document.getElementById('preview');
+        const form = document.getElementById('uploadForm');
+
+        function clearPreview() {
+            previewDiv.innerHTML = '';
+        }
+
+        function previewMusic(file) {
+            const audio = document.createElement('audio');
+            audio.controls = true;
+            audio.src = URL.createObjectURL(file);
+            previewDiv.appendChild(audio);
+        }
+
+        function previewPhoto(file) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            previewDiv.appendChild(img);
+        }
+
+        musicInput.addEventListener('change', () => {
+            clearPreview();
+            if (musicInput.files.length > 0) {
+                previewMusic(musicInput.files[0]);
+            }
+            if (photoInput.files.length > 0) {
+                previewPhoto(photoInput.files[0]);
+            }
+        });
+
+        photoInput.addEventListener('change', () => {
+            clearPreview();
+            if (musicInput.files.length > 0) {
+                previewMusic(musicInput.files[0]);
+            }
+            if (photoInput.files.length > 0) {
+                previewPhoto(photoInput.files[0]);
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso!');
+            form.reset();
+            clearPreview();
+        });
+    </script>
+</body>
+</html>
